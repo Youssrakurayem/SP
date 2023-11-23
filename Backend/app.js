@@ -52,7 +52,7 @@ const connectionOptions = {
 };
 
 mongoose
-  .connect(db_url, connectionOptions)
+  .connect("mongodb//localhost:27017", connectionOptions)
   .then(() => console.log("mongoDB connected"))
   .catch((e) => {
     console.log(e);

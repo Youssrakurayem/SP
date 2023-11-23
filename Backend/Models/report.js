@@ -25,6 +25,16 @@ const ReportSchema = new mongoose.Schema(
         type: int,
         required: true,
       },
+
+      ResolutionAverageTime: {
+        type: int,
+        required: true,
+      },
+     
+      ResolutionMaxTime:{
+        type: int,
+        required: true,
+      },
   },
   schemaOptions
 );

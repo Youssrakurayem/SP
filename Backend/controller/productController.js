@@ -2,28 +2,7 @@ const productModel = require("../Models/productModel");
 
 
 
-const productController = {
-  getAllProducts: async (req, res) => {
-    try {
-      const products = await productModel.find();
-      return res.status(200).json(products);
-    } catch (e) {
-      return res.status(500).json({ message: e.message });
-    }
-  },
-  getProduct: async (req, res) => {
-    try {
-      const product = await productModel.findById(req.params.id);
-      return res.status(200).json(product);
-    } catch (error) {
-      return res.status(500).json({ message: error.message });
-    }
-  },
-  createProduct: async (req, res) => {
-    const product = new productModel({
-      name: req.body.name,
-      quantity: req.body.quantity,
-      price: req.body.price,
+const productController 
     });
     try {
       const newProduct = await product.save();
