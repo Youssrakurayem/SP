@@ -12,6 +12,11 @@ const TicketsSchema = new mongoose.Schema(
       required: true,
     },
 
+    UserID: {
+      type: int,
+      required: true,
+    },
+
     Subject: {
       type: String,
       required: true,
