@@ -1,9 +1,9 @@
-import "../stylesheets/auth.css";
+import "../stylesheets/Login.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-let backend_url = "http://localhost:3000/api/v1";
-// import { ToastContainer, toast } from "react-toastify";
+
+const backend_url = "http://localhost:3000/api/v1";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,9 +11,10 @@ const Login = () => {
     email: "",
     password: "",
   });
-  const [successMessage, setSucessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const { email, password } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue((prevInput) => ({
@@ -22,86 +23,81 @@ const Login = () => {
     }));
   };
 
-  // const handleError = (msg) => setErrorMessage(msg);
-
-  // // toast.error(err, {
-  // //   position: "bottom-left",
-  // // });
-  // const handleSuccess = (msg) => setSucessMessage(msg);
-  // // toast.success(msg, {
-  // //   position: "bottom-left",
-  // // });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${backend_url}/login`,
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
+        { ...inputValue },
+        {  withCredentials: true, credentials: 'include'  }
       );
-      // console.log(data);
+  
       const { status, data } = response;
-      console.log('data',data)
-      if (status==200) {
-        // handleSuccess(message);
-        localStorage.setItem("userId",response.data.user._id)
-        localStorage.setItem("role",response.data.user.role)
-        // setSucessMessage(message)
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
+      if (status === 200) {
+        const { token, user } = data;
+  
+        // Save the token in the headers for future API requests
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  
+        // Save the token in a cookie
+        document.cookie = `token=${token}; path=/; samesite=None;`;
+       
+        // Save other user information if needed
+        localStorage.setItem("userId", user._id);
+        localStorage.setItem("role", user.role);
+        await axios.post(`${backend_url}/otp/send-otp/${email}`, {},{withCredentials: true});
+
+        navigate("/otp", {state:{email: inputValue.email}}); // Redirect to Admin.jsx
+
       } else {
-        console.log();
-        // setErrorMessage(message);
-
-
+        setErrorMessage("Invalid email or password");
       }
     } catch (error) {
       console.log(error);
-      // setErrorMessage(error.message);
+      setErrorMessage("Server error");
     }
     setInputValue({
-      ...inputValue,
       email: "",
       password: "",
     });
   };
-
   return (
-    <div className="form_container" >
-      <h2>Login Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={handleOnChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-        <span>
-          {errorMessage} {successMessage}
-        </span>
-        <span>
-          Already have an account? <Link to={"/signup"}>Signup</Link>
-        </span>
+    <div className="login">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="h1">Login</div>
+        <input
+          pattern="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+          placeholder="Email"
+          id="email"
+          name="email"
+          type="text"
+          className="input form-content"
+          value={email}
+          onChange={handleOnChange}
+        />
+        <input
+          placeholder="Password"
+          id="password"
+          name="password"
+          type="password"
+          className="input form-content"
+          value={password}
+          onChange={handleOnChange}
+        />
+        <input value="Login" className="btn" type="submit" />
+        <span className="sign-up-label">{errorMessage}</span>
       </form>
+
+      <div className="rays">{/* SVG code for rays */}</div>
+
+      <div className="emitter">{/* SVG code for emitter */}</div>
+
+      <div className="buttons-container">
+        <span className="sign-up-label">Don't have an account?</span>
+        <Link className="sign-up-link" to={"/signup"}>
+          Signup
+        </Link>
+      </div>
     </div>
   );
 };

@@ -1,80 +1,71 @@
-import "../stylesheets/auth.css";
-
+// Register.jsx
+import "../stylesheets/register.css";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { ToastContainer, toast } from "react-toastify";
-let backend_url = "http://localhost:3000/api/v1";
-const Signup = () => {
+
+const backend_url = "http://localhost:3000/api/v1";
+
+const Register = () => {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
     username: "",
+    firstName: "",
+    lastName: "",
+    specialization: "",
+    role: "user",
   });
-  const [successMessage, setSucessMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { email, password, username } = inputValue;
+  const { email, password, username, firstName, lastName, specialization, role } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    console.log(name);
-    console.log(value);
     setInputValue((prevInputValue) => ({
       ...prevInputValue,
       [name]: value,
     }));
   };
 
-  //   const handleError = (err) =>
-  //     toast.error(err, {
-  //       position: "bottom-left",
-  //     });
-  //   const handleSuccess = (msg) =>
-  //     toast.success(msg, {
-  //       position: "bottom-right",
-  //     });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         `${backend_url}/register`,
-        {
-          ...inputValue,
-          displayName:username,
-          role: "customer",
-        },
+        { ...inputValue },
         { withCredentials: true }
       );
+
       const { status, data } = response;
-      if (status == 201) {
-        // handleSuccess(message);
-        setSucessMessage("SignUp successfuly");
+      if (status === 201) {
+        setSuccessMessage("Sign up successful");
         setTimeout(() => {
           navigate("/");
         }, 1000);
       } else {
-        setErrorMessage(message);
-
-        // handleError(message);
+        setErrorMessage(data.message);
       }
     } catch (error) {
-      console.log(error);
-      setErrorMessage(error.message);
+      console.error("Error during registration:", error);
+      setErrorMessage(error.response?.data?.message || "Server error");
     }
     setInputValue({
-      ...inputValue,
       email: "",
       password: "",
-      // displayName: "",
+      username: "",
+      firstName: "",
+      lastName: "",
+      specialization: "",
+      role: "",
     });
   };
-
   return (
-    <div className="form_container">
-      <h2>Signup Account</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="register">
+      <form className="form" onSubmit={handleSubmit}>
+        <h1>Sign up Account</h1>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -86,12 +77,32 @@ const Signup = () => {
           />
         </div>
         <div>
-          <label htmlFor="email">Username</label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="username"
             value={username}
             placeholder="Enter your username"
+            onChange={handleOnChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="firstName">First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            value={firstName}
+            placeholder="Enter your first name"
+            onChange={handleOnChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="lastName">Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            value={lastName}
+            placeholder="Enter your last name"
             onChange={handleOnChange}
           />
         </div>
@@ -105,17 +116,33 @@ const Signup = () => {
             onChange={handleOnChange}
           />
         </div>
+        <div>
+          <label htmlFor="specialization">Specialization</label>
+          <input
+            type="text"
+            name="specialization"
+            value={specialization}
+            placeholder="Enter your specialization"
+            onChange={handleOnChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="role">Role</label>
+          <input
+            type="text"
+            name="role"
+            value={role}
+            placeholder="Enter your role"
+            onChange={handleOnChange}
+          />
+        </div>
         <button type="submit">Submit</button>
+        <span>{errorMessage || successMessage}</span>
         <span>
-          {errorMessage} {successMessage}
-        </span>
-        <span>
-          Already have an account? <Link to={"/login"}>Login</Link>
+          Already have an account? <Link to={"/"}>Login</Link>
         </span>
       </form>
-      {/* <ToastContainer /> */}
     </div>
   );
 };
-
-export default Signup;
+export default Register;
