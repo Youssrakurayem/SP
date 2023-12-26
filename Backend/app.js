@@ -5,9 +5,18 @@ const mongoose = require("mongoose");
 const productRouter = require("./Routes/products");
 const userRouter = require("./Routes/users");
 const authRouter = require("./Routes/auth");
+const ticketsRouter = require("./Routes/tickets");
+const KnowledgeRouter= require("./Routes/Knowledge");
+const CustomizationRouter= require("./Routes/Customization");
+const ReportRouter= require("./Routes/report");
+const WorkflowRouter= require("./Routes/Workflow");
+const livechatRouter = require("./Routes/livechat");
+const otpRouter = require("./Routes/otp");
+
 require('dotenv').config();
 
 const authenticationMiddleware = require("./Middleware/authenticationMiddleware");
+
 const cors = require("cors");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -22,21 +31,19 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "*");
-//   res.setHeader("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS,HEAD");
-//   res.setHeader(
-//     "Access-Control-Expose-Headers",
-//     "*"
-//   );
-
-//   next();
-// });
-
 app.use("/api/v1", authRouter);
 app.use(authenticationMiddleware);
-
+app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tickets", ticketsRouter);
+app.use("/api/v1/Knowledge", KnowledgeRouter);
+app.use("/api/v1/Customization", CustomizationRouter);
+app.use("/api/v1/report", ReportRouter); 
+app.use("/api/v1/workflow", WorkflowRouter); 
+app.use("/api/v1/livechat", livechatRouter); 
+app.use("/api/v1/otp", otpRouter);
+
+
 
 const db_name = process.env.DB_NAME;
 // * Cloud Connection
@@ -52,7 +59,7 @@ const connectionOptions = {
 };
 
 mongoose
-  .connect("mongodb//localhost:27017", connectionOptions)
+  .connect(db_url, connectionOptions)
   .then(() => console.log("mongoDB connected"))
   .catch((e) => {
     console.log(e);

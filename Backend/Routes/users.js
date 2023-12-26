@@ -1,40 +1,41 @@
-//const express = require("express");
-//const router = express.Router();
-//const userController = require("../controller/userController");
-//const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
+const express = require("express");
+const router = express.Router();
+const userController = require("../controller/userController");
+const authorizationMiddleware=require('../Middleware/authorizationMiddleware')
 
 // * Get all users
-// router.get("/",  authorizationMiddleware(['admin']),userController.getAllUsers);
+router.get("/",  authorizationMiddleware(['admin']),userController.getAllUsers);
 
 // * Get one user
-//router.get("/:id", authorizationMiddleware(['admin','customer']), userController.getUser);
+router.get("/:id", authorizationMiddleware(['admin','customer']), userController.getUser);
 
-// // * Update one user
-// //router.put("/:id",  authorizationMiddleware(['admin','customer']),userController.updateUser);
+// * Update one user
+router.put("/", authorizationMiddleware(['admin', 'user']), userController.updateUser);
+// * Delete one user
+router.delete("/:id", authorizationMiddleware(['admin']), userController.deleteUser);
 
-// // * Delete one user
-// router.delete("/:id", authorizationMiddleware(['admin']), userController.deleteUser);
+// get shopping cart
+router.get("/cart/:id",  authorizationMiddleware(['admin','customer']),userController.getShoppingCart);
 
-// // get shopping cart
-// router.get("/cart/:id",  authorizationMiddleware(['admin','customer']),userController.getShoppingCart);
+//* add to cart
+router.put("/addTocart/:id/:productid", authorizationMiddleware(['admin','customer']), userController.addToCart);
 
-// //* add to cart
-// router.put("/addTocart/:id/:productid", authorizationMiddleware(['admin','customer']), userController.addToCart);
+//* remove from cart
+router.put("/removeFromcart/:id/:productid",  authorizationMiddleware(['admin','customer']), userController.removeFromCart);
 
-// //* remove from cart
-// router.put("/removeFromcart/:id/:productid",  authorizationMiddleware(['admin','customer']), userController.removeFromCart);
+//*checkout
+router.get("/checkout/:id", authorizationMiddleware(['admin','customer']), userController.checkout);
+//* update role
+router.put("/:id/updateRole", authorizationMiddleware(['admin']), userController.updateUserRole);
 
-// //*checkout
-// router.get("/checkout/:id", authorizationMiddleware(['admin','customer']), userController.checkout);
+//------------using router.route()-----------------
 
-// //------------using router.route()-----------------
+// router.route("/").get(userController.getAllUsers);
 
-// // router.route("/").get(userController.getAllUsers);
+// router
+//   .route("/:id")
+//   .get(userController.getUser)
+//   .put(userController.updateUser)
+//   .delete(userController.deleteUser);
 
-// // router
-// //   .route("/:id")
-// //   .get(userController.getUser)
-// //   .put(userController.updateUser)
-// //   .delete(userController.deleteUser);
-
-// module.exports = router;
+module.exports = router;
