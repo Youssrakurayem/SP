@@ -7,22 +7,8 @@ const schemaOptions = {
 
 const CustomizationSchema = new mongoose.Schema(
   {
-    CustomizationID: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
-
-    OrganizationName: {
-      type: String,
-      required: true,
-    },
-
-    LogoURL: {
-      type: String,
-      required: true,
-    },
-
-    lPrimaryColor:{
+  
+    PrimaryColor:{
 
       type: String,
       required: true,

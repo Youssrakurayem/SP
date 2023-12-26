@@ -7,11 +7,6 @@ const schemaOptions = {
 
 const ReportSchema = new mongoose.Schema(
   {
-    ReportID: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
-
     ReportType: {
       type: String,
       required: true,
@@ -21,22 +16,18 @@ const ReportSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    AgentID: {
-        type: int,
-        required: true,
-      },
 
-      ResolutionAverageTime: {
-        type: int,
-        required: true,
-      },
-     
-      ResolutionMaxTime:{
-        type: int,
-        required: true,
-      },
+    AgentID: {
+      type: String,
+      required: true,
+    },
+
+    ResolutionTime: {
+      type: Number, // Use Number for time in milliseconds or adjust accordingly
+      required: true,
+    },
   },
   schemaOptions
 );
 
-module.exports = mongoose.model("report", ReportSchema);
+module.exports = mongoose.model("Report", ReportSchema);

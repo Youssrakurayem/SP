@@ -7,10 +7,7 @@ const schemaOptions = {
 
 const knowledgeSchema = new mongoose.Schema(
   {
-    ArticleId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+   
 
     title: {
       type: String,
@@ -26,4 +23,5 @@ const knowledgeSchema = new mongoose.Schema(
   schemaOptions
 );
 
-module.exports = mongoose.model("Knowledge", knowlegdeSchema);
+module.exports = mongoose.model("Knowledge", knowledgeSchema);
+module.exports.Schema = knowledgeSchema;   

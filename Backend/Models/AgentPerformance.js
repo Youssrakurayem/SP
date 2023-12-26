@@ -12,15 +12,7 @@ const PerformanceSchema = new mongoose.Schema(
       required: true,
     },
 
-    TotalTickets: {
-      type: int,
-      required: true,
-    },
-
-    ResolvedTickets: {
-      type: int,
-      required: true,
-    },
+    
 
     Rating: {
       type: double,

@@ -5,23 +5,27 @@ const schemaOptions = {
   timestamps: true,
 };
 
-const workflowSchema = new mongoose.Schema(
+const automatedWorkflow = new mongoose.Schema(
   {
-    TicketId: {
-      type: String,
-      required: true,
-    },
-    
-    Description: {
+    Issue: {
+        type: String,
+        required: true,
+      },
+
+
+   subIssue: {
       type: String,
       required: true,
     },
 
-
+    description: {
+      type: String,
+      required: true,
+    },
     
-   
+
   },
   schemaOptions
 );
 
-module.exports = mongoose.model("workflow", workflowSchema);
+module.exports = mongoose.model("automatedWorkflow", automatedWorkflow);

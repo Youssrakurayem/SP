@@ -4,7 +4,7 @@ const secretKey = "s1234rf,.lp";
 module.exports = function authenticationMiddleware(req, res, next) {
   const cookie = req.cookies;
   
-  // console.log(req.headers);
+  console.log('req c:',req.cookies);
 
   if (!cookie) {
     return res.status(401).json({ message: "No Cookie provided" });
