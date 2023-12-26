@@ -1,0 +1,44 @@
+/* Customization.css */
+
+/* Styles for the sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color:#323030;
+  overflow-x: hidden;
+  transition: width 0.5s; /* Add transition for sidebar width */
+  z-index: 2; /* Ensure the sidebar is above other elements */
+}
+
+.sidebar a {
+  padding: 60px 8px 8px 32px; /* Adjust the top padding to lower the components further */
+  text-decoration: none;
+  font-size: 18px;
+  color: #ffffff;
+  display: block;
+  transition: 0.3s;
+  z-index: 1; /* Ensure sidebar links are below the button */
+}
+
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+/* Remove the close button */
+.sidebar .close-btn {
+  display: none;
+}
+
+/* Styles for the content section */
+.main-content {
+  flex: 1; /* Use remaining space in the container */
+  padding: 20px; /* Add padding to the content */
+  background-color: #f8f9fa; /* Light background color for content */
+  border-radius: 8px; /* Add rounded corners to the content */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  transition: margin-left 0.5s; /* Add transition for content shift */
+}
+
